@@ -1,0 +1,9 @@
+# 
+# docker-compose.yml defines services for development and testing.
+
+What you need to do:
+  - Set up services for:
+      - PostgreSQL (or MySQL) with an initial database.
+      - Spring Boot applications (if necessary).
+      - Open the necessary ports (for example, 5432, 8080).
+      - Configure volume to store database data. */

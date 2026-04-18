@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: tag-v1.0.0
+      author: em1
+      changes:
+        - tagDatabase:
+            tag: v1.0.0
+
+  - include:
+      file: create-tables.yaml
+      relativeToChangelogFile: true
