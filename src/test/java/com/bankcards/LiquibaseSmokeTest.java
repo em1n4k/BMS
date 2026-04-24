@@ -15,11 +15,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @Testcontainers
 @ActiveProfiles("test")
-@SpringBootTest(classes = BankcardsApplication.class)
+@SpringBootTest(classes = BankCardsApplication.class)
 public class LiquibaseSmokeTest {
 
     @Container
-    static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:16-alpine").withDatabaseName("bankcards").withUsername("bankcards").withPassword("bankcards");
+    static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:16-alpine")
+            .withDatabaseName("bankcards")
+            .withUsername("bankcards")
+            .withPassword("bankcards");
 
     @DynamicPropertySource
     static void properties(DynamicPropertyRegistry registry) {

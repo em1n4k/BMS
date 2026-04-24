@@ -1,11 +1,12 @@
 server:
-  port: 8080
+  # Default local port
+  port: ${SERVER_PORT:8081}
 
 spring:
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/bankcards}
+    username: ${DB_USER:bankcards}
+    password: ${DB_PASSWORD:bankcards}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -23,8 +24,9 @@ spring:
 
 security:
   jwt:
+    # Override in production via environment variable
     secret: ${JWT_SECRET}
-    expiration: 3600000 # 1 hour
+    expiration: ${JWT_EXPIRATION} # 1 hour
 
 springdoc:
   api-docs:

@@ -1,10 +1,13 @@
 package com.bankcards.entity;
 
+import com.bankcards.entity.enums.CardStatus;
 import com.bankcards.entity.enums.Currency;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -19,7 +22,7 @@ public class Card {
     @Column(name = "card_number", nullable = false, unique = true, length = 32)
     private String cardNumber;
 
-    @NotBlank
+    @NotNull
     @Column(name = "balance", nullable = false)
     private BigDecimal balance = BigDecimal.ZERO;
 
@@ -27,9 +30,9 @@ public class Card {
     @Column(name = "currency", nullable = false, length = 10)
     private Currency currency;
 
-    @NotBlank
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 20)
-    private String status = "Active";
+    private CardStatus status = CardStatus.ACTIVE;
 
     @ManyToOne
     @JoinColumn(name = "owner_id", nullable = false)
@@ -42,18 +45,23 @@ public class Card {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
+    // Expiration date
+    @Column(name = "expiration_date", nullable = false)
+    private LocalDate expirationDate;
+
     /* Constructors */
 
     public Card() {
         // no-arg constructor
     }
 
-    public Card(String cardNumber, BigDecimal balance, Currency currency, String status, User owner) {
+    public Card(String cardNumber, BigDecimal balance, Currency currency, CardStatus status, User owner, LocalDate expirationDate) {
         this.cardNumber = cardNumber;
         this.balance = balance != null ? balance : BigDecimal.ZERO;
         this.currency = currency;
         this.status = status;
         this.owner = owner;
+        this.expirationDate = expirationDate;
     }
 
     /* Getters & Setters */
@@ -90,11 +98,11 @@ public class Card {
         this.currency = currency;
     }
 
-    public String getStatus() {
+    public CardStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(CardStatus status) {
         this.status = status;
     }
 
@@ -120,6 +128,14 @@ public class Card {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public LocalDate getExpirationDate() {
+        return expirationDate;
+    }
+
+    public void setExpirationDate(LocalDate expirationDate) {
+        this.expirationDate = expirationDate;
     }
 
     /* helpers */

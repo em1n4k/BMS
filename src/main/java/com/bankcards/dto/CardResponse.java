@@ -1,8 +1,10 @@
 package com.bankcards.dto;
 
+import com.bankcards.entity.enums.CardStatus;
 import com.bankcards.entity.enums.Currency;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class CardResponse {
@@ -11,15 +13,17 @@ public class CardResponse {
     private Currency currency;
     private String cardNumber;
     private BigDecimal balance;
-    private String status;
+    private CardStatus status;
     private LocalDateTime createdAt;
+    private LocalDate expirationDate;
 
     public CardResponse() {
     }
 
     public CardResponse(Long id, Currency currency, String cardNumber,
-                        BigDecimal balance, String status,
-                        LocalDateTime createdAt) {
+                        BigDecimal balance, CardStatus status,
+                        LocalDateTime createdAt,
+                        LocalDate expirationDate) {
 
         this.id = id;
         this.currency = currency;
@@ -27,6 +31,7 @@ public class CardResponse {
         this.balance = balance;
         this.status = status;
         this.createdAt = createdAt;
+        this.expirationDate = expirationDate;
     }
 
     public Long getId() {
@@ -61,11 +66,11 @@ public class CardResponse {
         this.balance = balance;
     }
 
-    public String getStatus() {
+    public CardStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(CardStatus status) {
         this.status = status;
     }
 
@@ -75,5 +80,13 @@ public class CardResponse {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public LocalDate getExpirationDate() {
+        return expirationDate;
+    }
+
+    public void setExpirationDate(LocalDate expirationDate) {
+        this.expirationDate = expirationDate;
     }
 }

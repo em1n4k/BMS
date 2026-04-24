@@ -4,6 +4,7 @@ import com.bankcards.dto.CardResponse;
 import com.bankcards.dto.CardTransferRequest;
 import com.bankcards.dto.TransferResponse;
 import com.bankcards.entity.Card;
+import com.bankcards.entity.enums.CardStatus;
 import com.bankcards.entity.enums.Currency;
 import com.bankcards.exception.CardAccessDeniedException;
 import com.bankcards.exception.CardNotFoundException;
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
@@ -53,7 +56,9 @@ public class CardService {
         card.setCardNumber(generateNewNumber());
         card.setCurrency(CardUtil.parseCurrencyOrDefault(currency));
         card.setBalance(BigDecimal.ZERO);
-        card.setStatus("ACTIVE");
+        card.setStatus(CardStatus.ACTIVE);
+        card.setExpirationDate(LocalDate.now().plusYears(3));
+
 
         owner.addCard(card);
 
@@ -68,7 +73,7 @@ public class CardService {
         Card card = cardRepository.findById(cardId)
                 .orElseThrow(() -> new CardNotFoundException("Card not found: " + cardId));
 
-        card.setStatus("BLOCKED");
+        card.setStatus(CardStatus.BLOCKED);
         cardRepository.save(card);
     }
 
@@ -97,7 +102,8 @@ public class CardService {
                 CardUtil.maskCardNumber(card.getCardNumber()),
                 card.getBalance(),
                 card.getStatus(),
-                card.getCreatedAt()
+                card.getCreatedAt(),
+                card.getExpirationDate()
         );
     }
 
@@ -134,13 +140,13 @@ public class CardService {
         Card old = cardRepository.findById(oldCardId)
                 .orElseThrow(() -> new RuntimeException("Card not found: " + oldCardId));
 
-        old.setStatus("BLOCKED");
+        old.setStatus(CardStatus.BLOCKED);
 
         Card replacementCard = new Card();
         replacementCard.setCardNumber(generateNewNumber());
         replacementCard.setCurrency(old.getCurrency());
         replacementCard.setBalance(old.getBalance()); // copy balance
-        replacementCard.setStatus("ACTIVE");
+        replacementCard.setStatus(CardStatus.ACTIVE);
 
         old.getOwner().addCard(replacementCard);
 
@@ -156,7 +162,8 @@ public class CardService {
                 CardUtil.maskCardNumber(card.getCardNumber()),
                 card.getBalance(),
                 card.getStatus(),
-                card.getCreatedAt()
+                card.getCreatedAt(),
+                card.getExpirationDate()
         );
     }
 

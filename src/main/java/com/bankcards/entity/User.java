@@ -145,7 +145,7 @@ public class User {
         if (card == null) return;
         this.cards.remove(card);
         if (card.getOwner() == this) {
-         card.setOwner(null);
+            card.setOwner(null);
         }
     }
 }
